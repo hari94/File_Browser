@@ -15,8 +15,6 @@ import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,13 +35,13 @@ public class MainActivity extends ListActivity implements OnClickListener {
 
 	List<String> item = null;
 	List<String> path = null;
-	File f,f_copy,f_move;
-	String root="/";
+	File f, f_copy, f_move;
+	String root = "/";
 	ListView lv;
 	TextView tvPath;
 	Button bBack;
 	ImageButton bRoot;
-	int sort_choice,flag;
+	int sort_choice, flag;
 	double file_size;
 
 	@Override
@@ -78,16 +76,15 @@ public class MainActivity extends ListActivity implements OnClickListener {
 				listView.setAdapter(adp);
 
 				listView.setOnItemClickListener(new OnItemClickListener() {
-					AlertDialog.Builder editalert = new AlertDialog.Builder(
-							MainActivity.this);
-
+					AlertDialog.Builder editalert = new AlertDialog.Builder(MainActivity.this);
+									//Create a Dialog with an EditText and a Button.
 					@Override
 					public void onItemClick(AdapterView<?> arg0, View arg1,
 							int arg2, long arg3) {
 						// TODO Auto-generated method stub
 						switch (arg2) {
 						case 0:
-							editalert.setTitle("Rename File");
+							editalert.setTitle("Rename File");					
 							editalert.setMessage("Enter the new file name :");
 							final EditText input = new EditText(
 									MainActivity.this);
@@ -96,32 +93,32 @@ public class MainActivity extends ListActivity implements OnClickListener {
 									LinearLayout.LayoutParams.FILL_PARENT);
 							input.setLayoutParams(lp);
 							editalert.setView(input);
-							editalert.setPositiveButton("Done",	new DialogInterface.OnClickListener() {
+							editalert.setPositiveButton("Done",
+									new DialogInterface.OnClickListener() {
 										public void onClick(DialogInterface dialog,int whichButton) {
 											String new_name = input.getText().toString();
 											String curr_name = re_file.getName();
-											
+
 											File directory = new File(re_file.getParent());
 											File from = new File(directory,curr_name);
 											File to = new File(directory,new_name);
 											from.renameTo(to);
 											getDir(re_file.getParent());
-																					}
+										}
 									});
 							editalert.show();
 							break;
 						case 1:
-							flag=1;
-							f_copy=(re_file.getAbsoluteFile());
+							flag = 1;
+							f_copy = (re_file.getAbsoluteFile());
 							break;
 						case 2:
-							flag=2;
-							f_copy=(re_file.getAbsoluteFile());
-							
-							
+							flag = 2;
+							f_copy = (re_file.getAbsoluteFile());
+
 							break;
 						case 3:
-							String dir=re_file.getParent();
+							String dir = re_file.getParent();
 							re_file.delete();
 							getDir(dir);
 							break;
@@ -150,7 +147,7 @@ public class MainActivity extends ListActivity implements OnClickListener {
 		f = new File(dirPath);
 		File[] files = f.listFiles();
 		if (sort_choice == 0)
-			Arrays.sort(files);				// ***********Sort by name!
+			Arrays.sort(files); // ***********Sort by name!
 		else if (sort_choice == 1) {
 			Comparator comp = new Comparator() {
 				public int compare(final Object o1, final Object o2) {
@@ -159,18 +156,22 @@ public class MainActivity extends ListActivity implements OnClickListener {
 					final int s1Dot = s1.lastIndexOf('.');
 					final int s2Dot = s2.lastIndexOf('.');
 
-					if ((s1Dot == -1) == (s2Dot == -1)) { // either both are files or both are folders.
-						s1 = s1.substring(s1Dot + 1); 	// to get the substring after the '.'
+					if ((s1Dot == -1) == (s2Dot == -1)) { // either both are
+															// files or both are
+															// folders.
+						s1 = s1.substring(s1Dot + 1); // to get the substring
+														// after the '.'
 						s2 = s2.substring(s2Dot + 1);
 						return s1.compareTo(s2);
-					} else if (s1Dot == -1) { 			// only s2 has an extension, so s1 goes first
+					} else if (s1Dot == -1) { // only s2 has an extension, so s1
+												// goes first
 						return -1;
-					} else { 						// only s1 has an extension, so s1 goes second
+					} else { // only s1 has an extension, so s1 goes second
 						return 1;
 					}
 				}
 			};
-			Arrays.sort(files, comp);		// ***********Sort by type!
+			Arrays.sort(files, comp); // ***********Sort by type!
 		} else if (sort_choice == 2) {
 			Comparator comp = new Comparator() {
 				public int compare(final Object o1, final Object o2) {
@@ -183,16 +184,16 @@ public class MainActivity extends ListActivity implements OnClickListener {
 
 					if (file_size1 < file_size2)
 						return -1;
-					else						
-						return 1; 						
+					else
+						return 1;
 
 				}
 			};
-			Arrays.sort(files, comp);		// ***********Sort by size!
+			Arrays.sort(files, comp); // ***********Sort by size!
 		}
 
 		if (!dirPath.equals(root)) {
-			
+
 			bRoot = (ImageButton) findViewById(R.id.bRoot);
 			bBack = (Button) findViewById(R.id.bBack);
 			bRoot.setEnabled(true);
@@ -203,9 +204,9 @@ public class MainActivity extends ListActivity implements OnClickListener {
 		}
 		tvPath.setText("Current Location: " + dirPath + "\nTotal no. of files:"
 				+ files.length);
-		
+
 		if (dirPath.equals(root)) {
-			
+
 			bRoot = (ImageButton) findViewById(R.id.bRoot);
 			bRoot.setEnabled(false);
 			bBack = (Button) findViewById(R.id.bBack);
@@ -215,19 +216,30 @@ public class MainActivity extends ListActivity implements OnClickListener {
 		for (int i = 0; i < files.length; i++) {
 			File file = files[i];
 			path.add(file.getPath());
-			file_size = Float.parseFloat(String.valueOf(file.length() / 1024)); //Size of cuurent file in KB
+			file_size = Float.parseFloat(String.valueOf(file.length() / 1024)); // Size
+																				// of
+																				// current
+																				// file
+																				// in
+																				// KB
 			if (file.isDirectory())
 				item.add(file.getName() + "/" + "\n\t\t\t\t\t\t\tFolder");
 
-			else if(file_size<1024)
-				item.add(file.getName() + "\n\t\t\t\t\t\t\tFile Size: "+ file_size + " KB");
-			else{
-				file_size = Float.parseFloat(String.valueOf(file.length() / 1024/1024));	//Converting into MB
-				item.add(file.getName() + "\n\t\t\t\t\t\t\tFile Size: "+ file_size + " MB");
+			else if (file_size < 1024)
+				item.add(file.getName() + "\n\t\t\t\t\t\t\tFile Size: "
+						+ file_size + " KB");
+			else {
+				file_size = Float
+						.parseFloat(String.valueOf(file.length() / 1024 / 1024)); // Converting
+																					// into
+																					// MB
+				item.add(file.getName() + "\n\t\t\t\t\t\t\tFile Size: "
+						+ file_size + " MB");
 			}
 		}
 
-		ArrayAdapter<String> filelist = new ArrayAdapter<String>(this,R.layout.row, item);
+		ArrayAdapter<String> filelist = new ArrayAdapter<String>(this,
+				R.layout.row, item);
 		setListAdapter(filelist);
 
 	}
@@ -255,7 +267,8 @@ public class MainActivity extends ListActivity implements OnClickListener {
 			dialog.setTitle("Sort By :");
 			ListView listView = (ListView) dialog.findViewById(R.id.lv);
 
-			ArrayAdapter<String> ad = new ArrayAdapter<String>(this,R.layout.single_item, R.id.singleItem, optionlist);
+			ArrayAdapter<String> ad = new ArrayAdapter<String>(this,
+					R.layout.single_item, R.id.singleItem, optionlist);
 			listView.setAdapter(ad);
 
 			listView.setOnItemClickListener(new OnItemClickListener() {
@@ -288,24 +301,22 @@ public class MainActivity extends ListActivity implements OnClickListener {
 			break;
 		case R.id.paste:
 			File f_paste = null;
-			if(flag==2){
-				f_paste=new File(f.getAbsolutePath(),f_copy.getName());
+			if (flag == 2) {
+				f_paste = new File(f.getAbsolutePath(), f_copy.getName());
 				f_copy.renameTo(f_paste);
-				Log.i("New file created",f_copy.getAbsolutePath());
-				flag=0;
-			}
-			else if(flag==1){	
-			f_paste=new File(f.getAbsolutePath(),f_copy.getName());				
-			
-			try {
-				copyFiles(f_paste.getParent());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			}
-			else{
-				Toast.makeText(MainActivity.this, "No Files selected", Toast.LENGTH_SHORT).show();
+				flag = 0;
+			} else if (flag == 1) {
+				f_paste = new File(f.getAbsolutePath(), f_copy.getName());
+
+				try {
+					copyFiles(f_paste.getParent());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				Toast.makeText(MainActivity.this, "No Files selected",
+						Toast.LENGTH_SHORT).show();
 			}
 			getDir(f.getAbsolutePath());
 			break;
@@ -316,24 +327,25 @@ public class MainActivity extends ListActivity implements OnClickListener {
 		return false;
 	}
 
-	public void copyFiles(String destination) throws IOException {  //fn. to copy files 
-	    
-	    FileChannel in = null;  
-	    FileChannel out = null;  
-	     
-	        try {  
-	            in = new FileInputStream(f_copy).getChannel();  
-	            File outFile = new File(destination, f_copy.getName());  
-	            out = new FileOutputStream(outFile).getChannel();  
-	            in.transferTo(0, in.size(), out);  
-	        } finally {  
-	            if (in != null)  
-	                in.close();  
-	            if (out != null)  
-	                out.close();  
-	        }  
-	    }  
-	
+	public void copyFiles(String destination) throws IOException { // fn. to
+																	// copy
+																	// files
+
+		FileChannel in = null;
+		FileChannel out = null;
+
+		try {
+			in = new FileInputStream(f_copy).getChannel();
+			File outFile = new File(destination, f_copy.getName());
+			out = new FileOutputStream(outFile).getChannel();
+			in.transferTo(0, in.size(), out);
+		} finally {
+			if (in != null)
+				in.close();
+			if (out != null)
+				out.close();
+		}
+	}
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
@@ -344,10 +356,13 @@ public class MainActivity extends ListActivity implements OnClickListener {
 			if (file.canRead()) {
 				getDir(path.get(position));
 			} else {
-				Toast.makeText(this, "Access denied!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "Access denied!", Toast.LENGTH_SHORT)
+						.show();
 			}
 		} else {
-			Toast.makeText(this, file.getName(), Toast.LENGTH_SHORT).show(); //Display file name
+			Toast.makeText(this, file.getName(), Toast.LENGTH_SHORT).show(); // Display
+																				// file
+																				// name
 		}
 	}
 
