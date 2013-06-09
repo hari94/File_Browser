@@ -156,17 +156,13 @@ public class MainActivity extends ListActivity implements OnClickListener {
 					final int s1Dot = s1.lastIndexOf('.');
 					final int s2Dot = s2.lastIndexOf('.');
 
-					if ((s1Dot == -1) == (s2Dot == -1)) { // either both are
-															// files or both are
-															// folders.
-						s1 = s1.substring(s1Dot + 1); // to get the substring
-														// after the '.'
+					if ((s1Dot == -1) == (s2Dot == -1)) { // either both are files or both are folders.
+						s1 = s1.substring(s1Dot + 1); // to get the substring after the '.'
 						s2 = s2.substring(s2Dot + 1);
 						return s1.compareTo(s2);
-					} else if (s1Dot == -1) { // only s2 has an extension, so s1
-												// goes first
+					} else if (s1Dot == -1) { // only s2 has an extension, so s1 goes first
 						return -1;
-					} else { // only s1 has an extension, so s1 goes second
+					} else { 				// only s1 has an extension, so s1 goes second
 						return 1;
 					}
 				}
@@ -216,12 +212,7 @@ public class MainActivity extends ListActivity implements OnClickListener {
 		for (int i = 0; i < files.length; i++) {
 			File file = files[i];
 			path.add(file.getPath());
-			file_size = Float.parseFloat(String.valueOf(file.length() / 1024)); // Size
-																				// of
-																				// current
-																				// file
-																				// in
-																				// KB
+			file_size = Float.parseFloat(String.valueOf(file.length() / 1024)); // Size of current file in KB
 			if (file.isDirectory())
 				item.add(file.getName() + "/" + "\n\t\t\t\t\t\t\tFolder");
 
@@ -230,9 +221,7 @@ public class MainActivity extends ListActivity implements OnClickListener {
 						+ file_size + " KB");
 			else {
 				file_size = Float
-						.parseFloat(String.valueOf(file.length() / 1024 / 1024)); // Converting
-																					// into
-																					// MB
+						.parseFloat(String.valueOf(file.length() / 1024 / 1024)); // Converting into MB
 				item.add(file.getName() + "\n\t\t\t\t\t\t\tFile Size: "
 						+ file_size + " MB");
 			}
@@ -327,9 +316,7 @@ public class MainActivity extends ListActivity implements OnClickListener {
 		return false;
 	}
 
-	public void copyFiles(String destination) throws IOException { // fn. to
-																	// copy
-																	// files
+	public void copyFiles(String destination) throws IOException { // fn. to copy files
 
 		FileChannel in = null;
 		FileChannel out = null;
@@ -360,9 +347,7 @@ public class MainActivity extends ListActivity implements OnClickListener {
 						.show();
 			}
 		} else {
-			Toast.makeText(this, file.getName(), Toast.LENGTH_SHORT).show(); // Display
-																				// file
-																				// name
+			Toast.makeText(this, file.getName(), Toast.LENGTH_SHORT).show(); // Display file  name
 		}
 	}
 
